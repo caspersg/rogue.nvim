@@ -1,4 +1,4 @@
-local g = Rogue -- alias
+local g = require("rogue.main")
 local mesg = require("rogue.mesg")
 local random = require("rogue.random")
 local util = require("rogue.util")
@@ -707,8 +707,7 @@ end
 
 function g.mon_name(monster)
   if
-    g.blind > 0
-    or (monster.m_flags[g.INVISIBLE] and not (g.detect_monster or g.see_invisible or g.r_see_invisible))
+    g.blind > 0 or (monster.m_flags[g.INVISIBLE] and not (g.detect_monster or g.see_invisible or g.r_see_invisible))
   then
     return mesg[63]
   end

@@ -1,4 +1,4 @@
-local g = Rogue -- alias
+local g = require("rogue.main")
 local mesg = require("rogue.mesg")
 local util = require("rogue.util")
 

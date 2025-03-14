@@ -1,4 +1,5 @@
-local g = Rogue -- alias
+local g = require("rogue.main")
+local Rogue = require("rogue.main")
 local util = require("rogue.util")
 
 g.DEBUG = true
