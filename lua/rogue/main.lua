@@ -5,8 +5,8 @@ end
 
 Rogue = {}
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local util = require("rogue.util")
 
 g.version = "1.0.2"
 
@@ -23,9 +23,9 @@ local function check_global()
 end
 
 local function init_dirs()
-  g.home_dir = os.getenv "HOME"
+  g.home_dir = os.getenv("HOME")
   if not g.home_dir then
-    g.home_dir = os.getenv "USERPROFILE"
+    g.home_dir = os.getenv("USERPROFILE")
     if not g.home_dir then
       g.home_dir = "."
     end
@@ -54,7 +54,7 @@ end
 
 local function main()
   if not mesg[1] then
-    print "Cannot open message file"
+    print("Cannot open message file")
     return
   end
   if vim.o.columns < g.DCOLS or vim.o.lines < g.DROWS then
@@ -64,7 +64,7 @@ local function main()
   local first = true
   g.update_flag = true
 
-  local args = util.split(util.get_vim_variable "s:args", " ")
+  local args = util.split(util.get_vim_variable("s:args"), " ")
   if g.init(args) then
     -- restored game
     first = false
@@ -103,3 +103,41 @@ function g.main()
     error(err)
   end
 end
+
+g.EXIT_SUCCESS = "g.EXIT_SUCCESS"
+function g.exit(e)
+  local level = 2
+  if e == nil then
+    e = g.EXIT_SUCCESS
+  end
+  if e == g.EXIT_SUCCESS then
+    level = 0
+  end
+  error(e, level)
+end
+
+function g.expand_fname(fname, dir)
+  fname = fname:gsub("\\", "/")
+  if string.char(fname:byte(1)) == "~" then
+    fname = fname:gsub("~/", g.home_dir)
+  elseif not (fname:find("^/.*") or fname:find("^[A-Za-z]:/.*")) then
+    fname = dir .. fname
+  end
+  return fname
+end
+
+function g.iconv_from_utf8(str)
+  if g.needs_iconv then
+    return vim.fn.iconv(str, "utf-8", vim.fn.eval("s:save_encoding"))
+  end
+  return str
+end
+
+function g.iconv_to_utf8(str)
+  if g.needs_iconv then
+    return vim.fn.iconv(str, vim.fn.eval("s:save_encoding"), "utf-8")
+  end
+  return str
+end
+
+return g

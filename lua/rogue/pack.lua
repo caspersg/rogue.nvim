@@ -1,5 +1,5 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
 
 g.curse_message = ""
 
@@ -8,14 +8,7 @@ function g.init_pack()
 end
 
 local function check_duplicate(obj, pack)
-  if
-    not (
-      obj.what_is == g.WEAPON
-      or obj.what_is == g.FOOD
-      or obj.what_is == g.SCROL
-      or obj.what_is == g.POTION
-    )
-  then
+  if not (obj.what_is == g.WEAPON or obj.what_is == g.FOOD or obj.what_is == g.SCROL or obj.what_is == g.POTION) then
     return nil
   end
   if (obj.what_is == g.FOOD) and (obj.which_kind == g.FRUIT) then
@@ -93,7 +86,7 @@ local function is_pack_letter(c, mask)
   elseif c == "," then
     return true, g.LIST, g.AMULET
   else
-    return (c:match "^[a-z]$" ~= nil or c == g.CANCEL or c == g.LIST), c, mask
+    return (c:match("^[a-z]$") ~= nil or c == g.CANCEL or c == g.LIST), c, mask
   end
 end
 
@@ -172,11 +165,7 @@ function g.pick_up(row, col)
   local obj = g.object_at(g.level_objects, row, col)
   local status = true
 
-  if
-    obj.what_is == g.SCROL
-    and obj.which_kind == g.SCARE_MONSTER
-    and obj.picked_up
-  then
+  if obj.what_is == g.SCROL and obj.which_kind == g.SCARE_MONSTER and obj.picked_up then
     g.message(mesg[86])
     g.dungeon[row][col][g.OBJECT] = nil
     g.vanish(obj, false, g.level_objects)
@@ -383,10 +372,7 @@ function g.unwield(obj)
 end
 
 function g.call_it()
-  local ch = g.pack_letter(
-    mesg[108],
-    { [g.SCROL] = true, [g.POTION] = true, [g.WAND] = true, [g.RING] = true }
-  )
+  local ch = g.pack_letter(mesg[108], { [g.SCROL] = true, [g.POTION] = true, [g.WAND] = true, [g.RING] = true })
   if ch == g.CANCEL then
     return
   end
@@ -395,42 +381,19 @@ function g.call_it()
     g.message(mesg[109])
     return
   end
-  if
-    not (
-      obj.what_is == g.SCROL
-      or obj.what_is == g.POTION
-      or obj.what_is == g.WAND
-      or obj.what_is == g.RING
-    )
-  then
+  if not (obj.what_is == g.SCROL or obj.what_is == g.POTION or obj.what_is == g.WAND or obj.what_is == g.RING) then
     g.message(mesg[110])
     return
   end
   local id_table = g.get_id_table(obj)
   local buf
   if mesg.JAPAN then
-    buf = g.get_input_line(
-      mesg[111],
-      "",
-      id_table[obj.which_kind].title,
-      false,
-      true
-    )
-    if
-      buf ~= ""
-      and string.byte " " <= buf:byte(1)
-      and buf:byte(1) <= string.byte "~"
-    then
+    buf = g.get_input_line(mesg[111], "", id_table[obj.which_kind].title, false, true)
+    if buf ~= "" and string.byte(" ") <= buf:byte(1) and buf:byte(1) <= string.byte("~") then
       buf = buf .. " "
     end
   else
-    buf = g.get_input_line(
-      mesg[111],
-      "",
-      id_table[obj.which_kind].title,
-      true,
-      true
-    )
+    buf = g.get_input_line(mesg[111], "", id_table[obj.which_kind].title, true, true)
   end
   if buf ~= "" then
     id_table[obj.which_kind].id_status = g.CALLED

@@ -1,6 +1,6 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
 
 local Trap = {}
 function Trap.new()
@@ -78,11 +78,7 @@ function g.trap_player(row, col)
     if g.rogue.hp_current <= 0 then
       g.rogue.hp_current = 0
     end
-    if
-      not g.sustain_strength
-      and random.rand_percent(40)
-      and g.rogue.str_current >= 3
-    then
+    if not g.sustain_strength and random.rand_percent(40) and g.rogue.str_current >= 3 then
       g.rogue.str_current = g.rogue.str_current - 1
     end
     g.print_stats()
@@ -124,14 +120,8 @@ function g.add_traps()
 
     if i == 0 and g.party_room ~= g.NO_ROOM then
       repeat
-        row = random.get_rand(
-          (g.rooms[g.party_room].top_row + 1),
-          (g.rooms[g.party_room].bottom_row - 1)
-        )
-        col = random.get_rand(
-          (g.rooms[g.party_room].left_col + 1),
-          (g.rooms[g.party_room].right_col - 1)
-        )
+        row = random.get_rand((g.rooms[g.party_room].top_row + 1), (g.rooms[g.party_room].bottom_row - 1))
+        col = random.get_rand((g.rooms[g.party_room].left_col + 1), (g.rooms[g.party_room].right_col - 1))
         tries = tries + 1
       until not (
           (
@@ -144,10 +134,10 @@ function g.add_traps()
           ) and (tries < 15)
         )
       if tries >= 15 then
-        row, col = g.gr_row_col { [g.FLOOR] = true, [g.MONSTER] = true }
+        row, col = g.gr_row_col({ [g.FLOOR] = true, [g.MONSTER] = true })
       end
     else
-      row, col = g.gr_row_col { [g.FLOOR] = true, [g.MONSTER] = true }
+      row, col = g.gr_row_col({ [g.FLOOR] = true, [g.MONSTER] = true })
     end
     g.traps[i].trap_row = row
     g.traps[i].trap_col = col
@@ -193,12 +183,7 @@ function g.search(n, is_auto)
     for j = -1, 1 do
       row = g.rogue.row + i
       col = g.rogue.col + j
-      if
-        (row < g.MIN_ROW)
-        or (row >= g.DROWS - 1)
-        or (col < 0)
-        or (col >= g.DCOLS)
-      then
+      if (row < g.MIN_ROW) or (row >= g.DROWS - 1) or (col < 0) or (col >= g.DCOLS) then
         -- continue
       else
         if g.dungeon[row][col][g.HIDDEN] then
@@ -212,21 +197,13 @@ function g.search(n, is_auto)
       for j = -1, 1 do
         row = g.rogue.row + i
         col = g.rogue.col + j
-        if
-          (row < g.MIN_ROW)
-          or (row >= g.DROWS - 1)
-          or (col < 0)
-          or (col >= g.DCOLS)
-        then
+        if (row < g.MIN_ROW) or (row >= g.DROWS - 1) or (col < 0) or (col >= g.DCOLS) then
           -- continue
         else
           if g.dungeon[row][col][g.HIDDEN] then
             if random.rand_percent(17 + (g.rogue.exp + g.ring_exp)) then
               g.dungeon[row][col][g.HIDDEN] = nil
-              if
-                g.blind == 0
-                and (row ~= g.rogue.row or col ~= g.rogue.col)
-              then
+              if g.blind == 0 and (row ~= g.rogue.row or col ~= g.rogue.col) then
                 g.mvaddch(row, col, g.get_dungeon_char(row, col))
               end
               shown = shown + 1

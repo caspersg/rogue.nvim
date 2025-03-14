@@ -1,5 +1,5 @@
-local g = Rogue -- alias
-local util = require "rogue.util"
+local g = require("rogue.main")
+local util = require("rogue.util")
 
 g.COLOR = true
 
@@ -75,7 +75,7 @@ function g.mvaddstr(row, col, str)
 end
 
 function g.refresh()
-  vim.cmd "normal gg"
+  vim.cmd("normal gg")
   local update = false
   local done_redraw = false
   for i = 0, g.DROWS - 1 do
@@ -89,15 +89,15 @@ function g.refresh()
       if i == g.DROWS - 1 and vim.o.lines == g.DROWS then
         row_str = row_str .. dungeon_str_buffer[i].str
         if g.update_flag or row_str ~= last_print_area then
-          vim.cmd "redraw"
-          print((vim.fn.has "gui_running" ~= 0 and "" or " ") .. row_str)
-          vim.cmd "redrawstatus"
+          vim.cmd("redraw")
+          print((vim.fn.has("gui_running") ~= 0 and "" or " ") .. row_str)
+          vim.cmd("redrawstatus")
           last_print_area = row_str
           done_redraw = true
         end
       else
         if g.update_flag and i == 0 and vim.o.lines > g.DROWS then
-          print " "
+          print(" ")
         end
         if dungeon_str_buffer[i].str ~= "" then
           if g.COLOR then
@@ -121,6 +121,6 @@ function g.refresh()
   end
   g.update_flag = false
   if update and not done_redraw then
-    vim.cmd "redraw"
+    vim.cmd("redraw")
   end
 end

@@ -1,7 +1,7 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.is_wood = {}
 
@@ -134,11 +134,7 @@ function g.inventory(pack, mask)
     local maxlen = len
     while obj and i < g.DROWS - 2 do
       if mask[obj.what_is] then
-        g.descs[i] = " "
-          .. obj.ichar
-          .. (Protected(obj) and "}" or ")")
-          .. " "
-          .. g.get_desc(obj, false)
+        g.descs[i] = " " .. obj.ichar .. (Protected(obj) and "}" or ")") .. " " .. g.get_desc(obj, false)
         local n = util.strwidth(g.descs[i])
         if n > maxlen then
           maxlen = n
@@ -177,8 +173,7 @@ function g.mix_colors()
   end
   for i = 0, g.POTIONS - 1 do
     local j = random.get_rand(i, g.POTIONS - 1)
-    g.id_potions[i].title, g.id_potions[j].title =
-      g.id_potions[j].title, g.id_potions[i].title
+    g.id_potions[i].title, g.id_potions[j].title = g.id_potions[j].title, g.id_potions[i].title
   end
 end
 
@@ -293,12 +288,7 @@ function g.get_desc(obj, capitalized)
   if g.wizard then
     -- goto ID
     goto_ID_flag = true
-  elseif
-    obj.what_is == g.WEAPON
-    or obj.what_is == g.ARMOR
-    or obj.what_is == g.WAND
-    or obj.what_is == g.RING
-  then
+  elseif obj.what_is == g.WEAPON or obj.what_is == g.ARMOR or obj.what_is == g.WAND or obj.what_is == g.RING then
     -- goto CHECK
     goto_CHECK_flag = true
   end
@@ -354,9 +344,7 @@ function g.get_desc(obj, capitalized)
         desc = desc .. id_table[obj.which_kind].real
       end
       if g.wizard or obj.identified then
-        if
-          obj.which_kind == g.DEXTERITY or obj.which_kind == g.ADD_STRENGTH
-        then
+        if obj.which_kind == g.DEXTERITY or obj.which_kind == g.ADD_STRENGTH then
           desc = desc .. mesg[537] .. g.znum(obj.class, true) .. mesg[538]
         end
       end
@@ -384,12 +372,7 @@ function g.get_desc(obj, capitalized)
     end
   elseif goto_CALL_flag or (not goto_CHECK_flag and id_status == g.CALLED) then
     -- ::CALL::
-    if
-      obj.what_is == g.SCROL
-      or obj.what_is == g.POTION
-      or obj.what_is == g.WAND
-      or obj.what_is == g.RING
-    then
+    if obj.what_is == g.SCROL or obj.what_is == g.POTION or obj.what_is == g.WAND or obj.what_is == g.RING then
       if mesg.JAPAN then
         desc = desc .. id_table[obj.which_kind].title .. mesg[34] .. item_name
       else

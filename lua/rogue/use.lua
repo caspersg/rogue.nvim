@@ -1,7 +1,7 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.halluc = 0
 g.blind = 0
@@ -58,10 +58,7 @@ local function potion_heal(extra)
     if extra then
       ratio = ratio + ratio
     end
-    local add = util.int_div(
-      (ratio * (g.rogue.hp_max - g.rogue.hp_current)),
-      100
-    )
+    local add = util.int_div((ratio * (g.rogue.hp_max - g.rogue.hp_current)), 100)
     g.rogue.hp_current = g.rogue.hp_current + add
     if g.rogue.hp_current > g.rogue.hp_max then
       g.rogue.hp_current = g.rogue.hp_max
@@ -93,7 +90,7 @@ local function idntfy()
     obj = g.get_letter_object(ch)
     if not obj then
       g.message(mesg[261])
-      g.message ""
+      g.message("")
       g.check_message()
     end
   until obj
@@ -158,14 +155,7 @@ local function hold_monster()
     for j = -2, 2 do
       local row = g.rogue.row + i
       local col = g.rogue.col + j
-      if
-        not (
-          (row < g.MIN_ROW)
-          or (row > (g.DROWS - 2))
-          or (col < 0)
-          or (col > (g.DCOLS - 1))
-        )
-      then
+      if not ((row < g.MIN_ROW) or (row > (g.DROWS - 2)) or (col < 0) or (col > (g.DCOLS - 1))) then
         if g.dungeon[row][col][g.MONSTER] then
           local monster = g.object_at(g.level_monsters, row, col)
           monster.m_flags[g.ASLEEP] = g.m_flags_desc[g.ASLEEP]
@@ -185,11 +175,7 @@ local function hold_monster()
 end
 
 function g.tele()
-  g.mvaddch(
-    g.rogue.row,
-    g.rogue.col,
-    g.get_dungeon_char(g.rogue.row, g.rogue.col)
-  )
+  g.mvaddch(g.rogue.row, g.rogue.col, g.get_dungeon_char(g.rogue.row, g.rogue.col))
 
   if g.cur_room >= 0 then
     g.darken_room(g.cur_room)
@@ -206,10 +192,7 @@ function g.hallucinate()
   local obj = g.level_objects.next_object
   while obj do
     local ch = g.mvinch(obj.row, obj.col)
-    if
-      not ch:find "^[A-Z]$"
-      and (obj.row ~= g.rogue.row or obj.col ~= g.rogue.col)
-    then
+    if not ch:find("^[A-Z]$") and (obj.row ~= g.rogue.row or obj.col ~= g.rogue.col) then
       if not string.find(" .#+", ch, 1, true) then
         g.mvaddch(obj.row, obj.col, ch)
       end
@@ -220,12 +203,8 @@ function g.hallucinate()
   local monster = g.level_monsters.next_object
   while monster do
     local ch = g.mvinch(monster.row, monster.col)
-    if ch:find "^[A-Z]$" then
-      g.mvaddch(
-        monster.row,
-        monster.col,
-        g.mon_tab[random.get_rand(0, 25)].m_char
-      )
+    if ch:find("^[A-Z]$") then
+      g.mvaddch(monster.row, monster.col, g.mon_tab[random.get_rand(0, 25)].m_char)
     end
     monster = monster.next_object
   end
@@ -434,11 +413,7 @@ function g.read_scroll()
       if g.rogue.weapon.what_is == g.WEAPON then
         local msg
         if not mesg.English then
-          msg = string.format(
-            mesg[249],
-            g.name_of(g.rogue.weapon),
-            get_ench_color()
-          )
+          msg = string.format(mesg[249], g.name_of(g.rogue.weapon), get_ench_color())
         else
           -- add "s" of the third person singular
           msg = string.format(

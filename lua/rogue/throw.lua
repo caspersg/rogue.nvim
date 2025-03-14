@@ -1,15 +1,14 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 local rand_around_pos = { [0] = 8, 7, 1, 3, 4, 5, 2, 6, 0 }
 local rand_around_row = 0
 local rand_around_col = 0
 
 local function potion_monster(monster, kind)
-  local maxhp =
-    g.mon_tab[string.byte(monster.m_char) - string.byte "A"].hp_to_kill
+  local maxhp = g.mon_tab[string.byte(monster.m_char) - string.byte("A")].hp_to_kill
   if
     kind == g.RESTORE_STRENGTH
     or kind == g.LEVITATION
@@ -19,15 +18,9 @@ local function potion_monster(monster, kind)
     or kind == g.SEE_INVISIBLE
   then
   elseif kind == g.EXTRA_HEALING then
-    monster.hp_to_kill = monster.hp_to_kill
-      + util.int_div(((maxhp - monster.hp_to_kill) * 2), 3)
-  elseif
-    kind == g.INCREASE_STRENGTH
-    or kind == g.HEALING
-    or kind == g.RAISE_LEVEL
-  then
-    monster.hp_to_kill = monster.hp_to_kill
-      + util.int_div((maxhp - monster.hp_to_kill), 5)
+    monster.hp_to_kill = monster.hp_to_kill + util.int_div(((maxhp - monster.hp_to_kill) * 2), 3)
+  elseif kind == g.INCREASE_STRENGTH or kind == g.HEALING or kind == g.RAISE_LEVEL then
+    monster.hp_to_kill = monster.hp_to_kill + util.int_div((maxhp - monster.hp_to_kill), 5)
   elseif kind == g.POISON then
     g.mon_damage(monster, (util.int_div(monster.hp_to_kill, 4) + 1))
   elseif kind == g.BLINDNESS then
@@ -48,20 +41,13 @@ end
 local function throw_at_monster(monster, weapon)
   local hit_chance = g.get_hit_chance(weapon)
   local damage = g.get_weapon_damage(weapon)
-  if
-    weapon.which_kind == g.ARROW
-    and (g.rogue.weapon and g.rogue.weapon.which_kind == g.BOW)
-  then
+  if weapon.which_kind == g.ARROW and (g.rogue.weapon and g.rogue.weapon.which_kind == g.BOW) then
     damage = damage + g.get_weapon_damage(g.rogue.weapon)
     damage = util.int_div((damage * 2), 3)
     hit_chance = hit_chance + util.int_div(hit_chance, 3)
   elseif
     weapon.in_use_flags == g.BEING_WIELDED
-    and (
-      weapon.which_kind == g.DAGGER
-      or weapon.which_kind == g.SHURIKEN
-      or weapon.which_kind == g.DART
-    )
+    and (weapon.which_kind == g.DAGGER or weapon.which_kind == g.SHURIKEN or weapon.which_kind == g.DART)
   then
     damage = util.int_div((damage * 3), 2)
     hit_chance = hit_chance + util.int_div(hit_chance, 3)
@@ -96,11 +82,8 @@ local function get_thrown_at_monster(obj, dir, row, col)
     if
       vim.tbl_isempty(g.dungeon[row][col])
       or (
-        (
-          g.dungeon[row][col][g.HORWALL]
-          or g.dungeon[row][col][g.VERTWALL]
-          or g.dungeon[row][col][g.HIDDEN]
-        ) and not g.dungeon[row][col][g.TRAP]
+        (g.dungeon[row][col][g.HORWALL] or g.dungeon[row][col][g.VERTWALL] or g.dungeon[row][col][g.HIDDEN])
+        and not g.dungeon[row][col][g.TRAP]
       )
     then
       row, col = orow, ocol
@@ -176,9 +159,7 @@ local function flop_weapon(weapon, row, col)
     new_weapon.quantity = 1
     new_weapon.ichar = "L"
     g.place_at(new_weapon, row, col)
-    if
-      g.rogue_can_see(row, col) and (row ~= g.rogue.row or col ~= g.rogue.col)
-    then
+    if g.rogue_can_see(row, col) and (row ~= g.rogue.row or col ~= g.rogue.col) then
       local mon = g.dungeon[row][col][g.MONSTER]
       g.dungeon[row][col][g.MONSTER] = nil
       local dch = g.get_dungeon_char(row, col)
@@ -188,7 +169,7 @@ local function flop_weapon(weapon, row, col)
         if monster then
           monster.trail_char = dch
         end
-        if not mch:find "^[A-Z]$" then
+        if not mch:find("^[A-Z]$") then
           g.mvaddch(row, col, dch)
         end
       else
@@ -241,9 +222,7 @@ function g.throw()
   monster, row, col = get_thrown_at_monster(weapon, dir, row, col)
   g.mvaddch(g.rogue.row, g.rogue.col, g.rogue.fchar)
   g.refresh()
-  if
-    g.rogue_can_see(row, col) and (row ~= g.rogue.row or col ~= g.rogue.col)
-  then
+  if g.rogue_can_see(row, col) and (row ~= g.rogue.row or col ~= g.rogue.col) then
     g.mvaddch(row, col, g.get_dungeon_char(row, col))
   end
   if monster then

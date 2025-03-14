@@ -1,6 +1,6 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
 
 local left_or_right
 local no_ring
@@ -62,9 +62,7 @@ function g.put_on_ring()
     g.check_message()
     return
   end
-  if
-    ((ch == "l") and g.rogue.left_ring) or ((ch == "r") and g.rogue.right_ring)
-  then
+  if ((ch == "l") and g.rogue.left_ring) or ((ch == "r") and g.rogue.right_ring) then
     g.check_message()
     g.message(mesg[165])
     return
@@ -161,9 +159,7 @@ function g.gr_ring(ring, assign_wk)
 
   if ring.which_kind == g.R_TELEPORT then
     ring.is_cursed = true
-  elseif
-    ring.which_kind == g.ADD_STRENGTH or ring.which_kind == g.DEXTERITY
-  then
+  elseif ring.which_kind == g.ADD_STRENGTH or ring.which_kind == g.DEXTERITY then
     repeat
       ring.class = random.get_rand(0, 4) - 2
     until ring.class ~= 0

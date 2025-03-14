@@ -1,6 +1,6 @@
-local g = Rogue -- alias
-local random = require "rogue.random"
-local util = require "rogue.util"
+local g = require("rogue.main")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 local Door = {}
 function Door.new()
@@ -46,8 +46,7 @@ function g.light_up_room(rn)
           if monster then
             g.dungeon[monster.row][monster.col][g.MONSTER] = nil
             monster.trail_char = g.get_dungeon_char(monster.row, monster.col)
-            g.dungeon[monster.row][monster.col][g.MONSTER] =
-              g.dungeon_desc[g.MONSTER]
+            g.dungeon[monster.row][monster.col][g.MONSTER] = g.dungeon_desc[g.MONSTER]
           end
         end
         g.mvaddch(i, j, g.get_dungeon_char(i, j))
@@ -112,14 +111,7 @@ function g.get_dungeon_char(row, col)
     local obj = g.object_at(g.level_objects, row, col)
     return g.get_mask_char(obj.what_is)
   end
-  if
-    mask[g.TUNNEL]
-    or mask[g.STAIRS]
-    or mask[g.HORWALL]
-    or mask[g.VERTWALL]
-    or mask[g.FLOOR]
-    or mask[g.DOOR]
-  then
+  if mask[g.TUNNEL] or mask[g.STAIRS] or mask[g.HORWALL] or mask[g.VERTWALL] or mask[g.FLOOR] or mask[g.DOOR] then
     if (mask[g.TUNNEL] or mask[g.STAIRS]) and not mask[g.HIDDEN] then
       return mask[g.STAIRS] and "%" or "#"
     end
@@ -236,8 +228,7 @@ end
 
 function g.party_objects(rn)
   local nf = 0
-  local N = ((g.rooms[rn].bottom_row - g.rooms[rn].top_row) - 1)
-    * ((g.rooms[rn].right_col - g.rooms[rn].left_col) - 1)
+  local N = ((g.rooms[rn].bottom_row - g.rooms[rn].top_row) - 1) * ((g.rooms[rn].right_col - g.rooms[rn].left_col) - 1)
   local n = random.get_rand(5, 10)
   if n > N then
     n = N - 2
@@ -250,10 +241,7 @@ function g.party_objects(rn)
     while not found and (j < 250) do
       row = random.get_rand(g.rooms[rn].top_row + 1, g.rooms[rn].bottom_row - 1)
       col = random.get_rand(g.rooms[rn].left_col + 1, g.rooms[rn].right_col - 1)
-      if
-        g.dungeon_equals(g.dungeon[row][col], g.FLOOR)
-        or g.dungeon_equals(g.dungeon[row][col], g.TUNNEL)
-      then
+      if g.dungeon_equals(g.dungeon[row][col], g.FLOOR) or g.dungeon_equals(g.dungeon[row][col], g.TUNNEL) then
         found = true
       end
 
@@ -304,10 +292,7 @@ function g.is_all_connected()
   visit_rooms(starting_room)
 
   for i = 0, g.MAXROOMS - 1 do
-    if
-      (g.rooms[i].is_room == g.R_ROOM or g.rooms[i].is_room == g.R_MAZE)
-      and not g.rooms[i].rooms_visited
-    then
+    if (g.rooms[i].is_room == g.R_ROOM or g.rooms[i].is_room == g.R_MAZE) and not g.rooms[i].rooms_visited then
       return false
     end
   end
@@ -318,17 +303,9 @@ function g.draw_magic_map()
   for i = 0, g.DROWS - 1 do
     for j = 0, g.DCOLS - 1 do
       local s = g.dungeon[i][j]
-      if
-        s[g.HORWALL]
-        or s[g.VERTWALL]
-        or s[g.DOOR]
-        or s[g.TUNNEL]
-        or s[g.TRAP]
-        or s[g.STAIRS]
-        or s[g.MONSTER]
-      then
+      if s[g.HORWALL] or s[g.VERTWALL] or s[g.DOOR] or s[g.TUNNEL] or s[g.TRAP] or s[g.STAIRS] or s[g.MONSTER] then
         local ch = g.mvinch(i, j)
-        if ch == " " or ch:find "^[A-Z]$" or s[g.TRAP] or s[g.HIDDEN] then
+        if ch == " " or ch:find("^[A-Z]$") or s[g.TRAP] or s[g.HIDDEN] then
           local skip = false
           local och = ch
           g.dungeon[i][j][g.HIDDEN] = nil
@@ -398,10 +375,7 @@ function g.dr_course(monster, entering, row, col)
     local r = random.get_rand(0, g.MAXROOMS - 1)
     for i = 0, g.MAXROOMS - 1 do
       local rr = (r + i) % g.MAXROOMS
-      if
-        not (g.rooms[i].is_room == g.R_ROOM or g.rooms[i].is_room == g.R_MAZE)
-        or (rr == rn)
-      then
+      if not (g.rooms[i].is_room == g.R_ROOM or g.rooms[i].is_room == g.R_MAZE) or (rr == rn) then
       else
         for k = 0, 3 do
           if g.rooms[rr].doors[k].oth_room == rn then
@@ -421,11 +395,7 @@ function g.dr_course(monster, entering, row, col)
     -- look for door to dead end
     for i = g.rooms[rn].top_row, g.rooms[rn].bottom_row do
       for j = g.rooms[rn].left_col, g.rooms[rn].right_col do
-        if
-          i ~= monster.row
-          and j ~= monster.col
-          and g.dungeon[i][j][g.DOOR]
-        then
+        if i ~= monster.row and j ~= monster.col and g.dungeon[i][j][g.DOOR] then
           monster.trow = i
           monster.tcol = j
           return

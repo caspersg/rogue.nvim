@@ -1,4 +1,3 @@
-local g = Rogue or {} -- alias
 local M = {}
 
 M.loadstring = _VERSION >= "Lua 5.2" and load or loadstring
@@ -15,7 +14,7 @@ local bit_exists, bit = pcall(require, "bit")
 if bit_exists then
   M.bxor = bit.bxor
 elseif _VERSION >= "Lua 5.3" then
-  M.bxor = require "rogue.util.lua53"
+  M.bxor = require("rogue.util.lua53")
 elseif _VERSION >= "Lua 5.2" then
   ---@diagnostic disable-next-line: undefined-global
   M.bxor = bit32.bxor
@@ -92,7 +91,7 @@ local function dump(obj, indent_depth, dumped_table_list, hex_flag)
     end
     s = s .. "} " .. tostring(obj)
 
-    if indent_depth == 0 and not s:find "{ ... } table" then
+    if indent_depth == 0 and not s:find("{ ... } table") then
       s = s:gsub(" table:[ xX%x]*", "")
     end
   elseif t == "string" then
@@ -145,42 +144,6 @@ end
 
 function M.msleep(n)
   vim.cmd("sleep " .. tostring(n) .. "m")
-end
-
-g.EXIT_SUCCESS = "g.EXIT_SUCCESS"
-function g.exit(e)
-  local level = 2
-  if e == nil then
-    e = g.EXIT_SUCCESS
-  end
-  if e == g.EXIT_SUCCESS then
-    level = 0
-  end
-  error(e, level)
-end
-
-function g.expand_fname(fname, dir)
-  fname = fname:gsub("\\", "/")
-  if string.char(fname:byte(1)) == "~" then
-    fname = fname:gsub("~/", g.home_dir)
-  elseif not (fname:find "^/.*" or fname:find "^[A-Za-z]:/.*") then
-    fname = dir .. fname
-  end
-  return fname
-end
-
-function g.iconv_from_utf8(str)
-  if g.needs_iconv then
-    return vim.fn.iconv(str, "utf-8", vim.fn.eval "s:save_encoding")
-  end
-  return str
-end
-
-function g.iconv_to_utf8(str)
-  if g.needs_iconv then
-    return vim.fn.iconv(str, vim.fn.eval "s:save_encoding", "utf-8")
-  end
-  return str
 end
 
 return M

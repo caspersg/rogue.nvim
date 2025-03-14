@@ -1,7 +1,7 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.less_hp = 0
 local flame_name
@@ -16,8 +16,7 @@ local function freeze(monster)
   if random.rand_percent(12) then
     return
   end
-  freeze_percent = freeze_percent
-    - (g.rogue.str_current + util.int_div(g.rogue.str_current, 2))
+  freeze_percent = freeze_percent - (g.rogue.str_current + util.int_div(g.rogue.str_current, 2))
   freeze_percent = freeze_percent - ((g.rogue.exp + g.ring_exp) * 4)
   freeze_percent = freeze_percent - (g.get_armor_class(g.rogue.armor) * 5)
   freeze_percent = freeze_percent - util.int_div(g.rogue.hp_max, 3)
@@ -179,11 +178,7 @@ local function drop_level()
 end
 
 local function drain_life()
-  if
-    random.rand_percent(60)
-    or g.rogue.hp_max <= 30
-    or g.rogue.hp_current < 10
-  then
+  if random.rand_percent(60) or g.rogue.hp_max <= 30 or g.rogue.hp_current < 10 then
     return
   end
   local n = random.get_rand(1, 3) -- 1 Hp, 2 Str, 3 both
@@ -236,11 +231,7 @@ function g.special_hit(monster)
 end
 
 function g.rust(monster)
-  if
-    not g.rogue.armor
-    or (g.get_armor_class(g.rogue.armor) <= 1)
-    or g.rogue.armor.which_kind == g.LEATHER
-  then
+  if not g.rogue.armor or (g.get_armor_class(g.rogue.armor) <= 1) or g.rogue.armor.which_kind == g.LEATHER then
     return
   end
   if g.rogue.armor.is_protected or g.maintain_armor then
@@ -256,19 +247,11 @@ function g.rust(monster)
 end
 
 local function try_to_cough(row, col, obj)
-  if
-    (row < g.MIN_ROW)
-    or (row > (g.DROWS - 2))
-    or (col < 0)
-    or (col > (g.DCOLS - 1))
-  then
+  if (row < g.MIN_ROW) or (row > (g.DROWS - 2)) or (col < 0) or (col > (g.DCOLS - 1)) then
     return false
   end
   local d = g.dungeon[row][col]
-  if
-    not (d[g.OBJECT] or d[g.STAIRS] or d[g.TRAP])
-    and (d[g.TUNNEL] or d[g.FLOOR] or d[g.DOOR])
-  then
+  if not (d[g.OBJECT] or d[g.STAIRS] or d[g.TRAP]) and (d[g.TUNNEL] or d[g.FLOOR] or d[g.DOOR]) then
     g.place_at(obj, row, col)
     if ((row ~= g.rogue.row) or (col ~= g.rogue.col)) and not d[g.MONSTER] then
       g.mvaddch(row, col, g.get_dungeon_char(row, col))
@@ -370,11 +353,7 @@ function g.check_imitator(monster)
   if monster.m_flags[g.IMITATES] then
     g.wake_up(monster)
     if g.blind > 0 then
-      g.mvaddch(
-        monster.row,
-        monster.col,
-        g.get_dungeon_char(monster.row, monster.col)
-      )
+      g.mvaddch(monster.row, monster.col, g.get_dungeon_char(monster.row, monster.col))
       g.check_message()
       g.message(string.format(mesg[206], g.mon_name(monster)))
     end
@@ -427,9 +406,7 @@ local function get_closer(row, col, trow, tcol)
 end
 
 function g.flame_broil(monster)
-  if
-    not g.mon_sees(monster, g.rogue.row, g.rogue.col) or random.coin_toss()
-  then
+  if not g.mon_sees(monster, g.rogue.row, g.rogue.col) or random.coin_toss() then
     return false
   end
   local row = g.rogue.row - monster.row
@@ -440,9 +417,7 @@ function g.flame_broil(monster)
   if col < 0 then
     col = -col
   end
-  if
-    ((row ~= 0) and (col ~= 0) and (row ~= col)) or ((row > 7) or (col > 7))
-  then
+  if ((row ~= 0) and (col ~= 0) and (row ~= col)) or ((row > 7) or (col > 7)) then
     return false
   end
   if g.blind == 0 and not g.rogue_is_around(monster.row, monster.col) then

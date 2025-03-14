@@ -1,7 +1,7 @@
-local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local g = require("rogue.main")
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.ObjBase = {}
 function g.ObjBase.new()
@@ -272,18 +272,9 @@ local function put_gold()
     else
       if is_maze or random.rand_percent(g.GOLD_PERCENT) then
         for j = 0, 49 do
-          local row = random.get_rand(
-            g.rooms[i].top_row + 1,
-            g.rooms[i].bottom_row - 1
-          )
-          local col = random.get_rand(
-            g.rooms[i].left_col + 1,
-            g.rooms[i].right_col - 1
-          )
-          if
-            g.dungeon_equals(g.dungeon[row][col], g.FLOOR)
-            or g.dungeon_equals(g.dungeon[row][col], g.TUNNEL)
-          then
+          local row = random.get_rand(g.rooms[i].top_row + 1, g.rooms[i].bottom_row - 1)
+          local col = random.get_rand(g.rooms[i].left_col + 1, g.rooms[i].right_col - 1)
+          if g.dungeon_equals(g.dungeon[row][col], g.FLOOR) or g.dungeon_equals(g.dungeon[row][col], g.TUNNEL) then
             plant_gold(row, col, is_maze)
             break
           end
@@ -296,7 +287,7 @@ end
 local function rand_place(obj)
   local row
   local col
-  row, col = g.gr_row_col { [g.FLOOR] = true, [g.TUNNEL] = true }
+  row, col = g.gr_row_col({ [g.FLOOR] = true, [g.TUNNEL] = true })
   g.place_at(obj, row, col)
 end
 
@@ -304,8 +295,7 @@ function g.put_objects()
   if g.cur_level < g.max_level then
     return
   end
-  local n = random.coin_toss() and random.get_rand(2, 4)
-    or random.get_rand(3, 5)
+  local n = random.coin_toss() and random.get_rand(2, 4) or random.get_rand(3, 5)
   while random.rand_percent(33) do
     n = n + 1
   end
@@ -573,7 +563,7 @@ end
 function g.put_stairs()
   local row
   local col
-  row, col = g.gr_row_col { [g.FLOOR] = true, [g.TUNNEL] = true }
+  row, col = g.gr_row_col({ [g.FLOOR] = true, [g.TUNNEL] = true })
   g.dungeon[row][col][g.STAIRS] = g.dungeon_desc[g.STAIRS]
 end
 
@@ -627,9 +617,7 @@ function g.show_objects()
       end
     end
     local mc = g.mvinch(row, col)
-    if
-      (not mc:find "^[A-Z]$") and (row ~= g.rogue.row or col ~= g.rogue.col)
-    then
+    if (not mc:find("^[A-Z]$")) and (row ~= g.rogue.row or col ~= g.rogue.col) then
       g.mvaddch(row, col, rc)
     end
     obj = obj.next_object
@@ -685,14 +673,14 @@ local function list_object(obj, max)
     if mesg.JAPAN then
       descs[i] = string.format(
         " %c) %s%s",
-        i + string.byte "a",
+        i + string.byte("a"),
         (weapon_or_armor and id[i].title or id[i].real),
         (weapon_or_armor and "" or g.name_of(obj))
       )
     else
       descs[i] = string.format(
         " %c) %s%s",
-        i + string.byte "a",
+        i + string.byte("a"),
         (weapon_or_armor and "" or g.name_of(obj)),
         (weapon_or_armor and id[i].title or id[i].real)
       )
@@ -763,19 +751,14 @@ function g.new_object_for_wizard()
   end
 
   if ch ~= "," and ch ~= ":" then
-    local buf = string.format(
-      mesg[83],
-      (obj.what_is == g.WEAPON) and mesg[84] or g.name_of(obj)
-    )
+    local buf = string.format(mesg[83], (obj.what_is == g.WEAPON) and mesg[84] or g.name_of(obj))
     while true do
       g.message(buf)
       while true do
         ch = g.rgetchar()
         if
-          ch ~= g.LIST
-            and ch ~= g.CANCEL
-            and string.byte(ch) < string.byte "a"
-          or string.byte(ch) > string.byte "a" + max
+          ch ~= g.LIST and ch ~= g.CANCEL and string.byte(ch) < string.byte("a")
+          or string.byte(ch) > string.byte("a") + max
         then
           g.sound_bell()
         else
@@ -794,7 +777,7 @@ function g.new_object_for_wizard()
       g.free_object(obj)
       return
     end
-    obj.which_kind = string.byte(ch) - string.byte "a"
+    obj.which_kind = string.byte(ch) - string.byte("a")
     if obj.what_is == g.RING then
       g.gr_ring(obj, false)
     end

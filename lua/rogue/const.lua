@@ -1,4 +1,4 @@
-local g = Rogue -- alias
+local g = require("rogue.main")
 
 g.print_enum = {}
 
