@@ -1,6 +1,8 @@
 
 **This plugin is still under the development!***
 
+Currently starts in Neovim v0.10.3
+
 # rogue.vim
 
 _"Hello Vimmer, welcome to the Dungeons of Doom..."_
@@ -26,7 +28,7 @@ https://github.com/4513ECHO/rogue.nvim
 
 ## Requirements
 
-rogue.nvim requires Neovim 0.7.0 or later. This is not working on Vim.
+rogue.nvim works in Neovim 0.10.3 but not tested on earlier versions
 
 ## Acknowledgments
 
