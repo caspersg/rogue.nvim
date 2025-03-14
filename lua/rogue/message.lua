@@ -1,5 +1,5 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
+local mesg = require("rogue.mesg")
 
 g.msg_cleared = true
 g.hunger_str = ""
@@ -121,7 +121,7 @@ function g.get_input_line(prompt, insert, if_cancelled, add_blank, do_echo)
       end
     elseif ch == "CTRL_W" then
       input_list = {}
-    elseif ch == "" or ch:find "CTRL_" then
+    elseif ch == "" or ch:find("CTRL_") then
     else
       table.insert(input_list, ch)
     end
@@ -157,8 +157,7 @@ function g.print_stats(update_flag)
   end
 
   if g.rogue.str_max > g.MAX_STRENGTH then
-    g.rogue.str_current = g.rogue.str_current
-      - (g.rogue.str_max - g.MAX_STRENGTH)
+    g.rogue.str_current = g.rogue.str_current - (g.rogue.str_max - g.MAX_STRENGTH)
     g.rogue.str_max = g.MAX_STRENGTH
   end
 
@@ -174,11 +173,7 @@ function g.print_stats(update_flag)
   line = line .. mesg[57] .. tmp .. string.rep(" ", 7 - #tmp)
   tmp = string.format("%d(%d)", g.rogue.hp_current, g.rogue.hp_max)
   line = line .. mesg[58] .. tmp .. string.rep(" ", 9 - #tmp)
-  tmp = string.format(
-    "%d(%d)",
-    g.rogue.str_current + g.add_strength,
-    g.rogue.str_max
-  )
+  tmp = string.format("%d(%d)", g.rogue.str_current + g.add_strength, g.rogue.str_max)
   line = line .. mesg[59] .. tmp .. string.rep(" ", 7 - #tmp)
   tmp = string.format("%d", g.get_armor_class(g.rogue.armor))
   line = line .. mesg[60] .. tmp .. string.rep(" ", 3 - #tmp)

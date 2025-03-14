@@ -1,6 +1,6 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local util = require("rogue.util")
 
 local score_file = "rogue_vim.scores"
 
@@ -17,9 +17,7 @@ end
 
 local function layer(lower, lcol, upper, ucol)
   local s1 = lower:sub(1, ucol - lcol)
-  local s2 = lower:sub(
-    ucol - lcol + 1 + util.strwidth(upper:gsub("%(%w%(", ""))
-  )
+  local s2 = lower:sub(ucol - lcol + 1 + util.strwidth(upper:gsub("%(%w%(", "")))
   return s1 .. upper .. s2
 end
 
@@ -37,11 +35,7 @@ local function tomb_str(str, xpos, idx, upper)
   if count > 0 then
     return
   end
-  str[idx] = str[idx]
-    :gsub("^/", "(g(/(g(")
-    :gsub("\\\\$", "(g(\\\\(g(")
-    :gsub("%|", "(g(|(g(")
-    :gsub("%*", "(y(*(y(")
+  str[idx] = str[idx]:gsub("^/", "(g(/(g("):gsub("\\\\$", "(g(\\\\(g("):gsub("%|", "(g(|(g("):gsub("%*", "(y(*(y(")
 end
 
 local function is_vowel(ch)
@@ -118,7 +112,7 @@ function g.killed_by(monster, other)
         [8] = mesg[180] .. g.znum(g.rogue.gold),
         [10] = buf,
         [11] = buf2,
-        [12] = g.znum(tonumber(os.date "%Y")),
+        [12] = g.znum(tonumber(os.date("%Y"))),
       }
     else
       inscribed_words = {
@@ -129,7 +123,7 @@ function g.killed_by(monster, other)
         [9] = string.format(mesg[180]:gsub("%%ld", "%%d"), g.rogue.gold),
         [10] = buf,
         [11] = buf2,
-        [12] = os.date "%Y",
+        [12] = os.date("%Y"),
       }
     end
     for i = 1, #str do
@@ -138,7 +132,7 @@ function g.killed_by(monster, other)
     end
 
     g.check_message()
-    g.message ""
+    g.message("")
   else
     if mesg.JAPAN then
       buf = buf .. buf2
@@ -153,7 +147,7 @@ function g.killed_by(monster, other)
     end
     g.message(buf)
   end
-  g.message ""
+  g.message("")
   g.put_scores(monster, other)
 end
 
@@ -186,12 +180,7 @@ local function get_value(obj)
   local val
   if what_is == g.WEAPON then
     val = g.id_weapons[wc].value
-    if
-      (wc == g.ARROW)
-      or (wc == g.DAGGER)
-      or (wc == g.SHURIKEN)
-      or (wc == g.DART)
-    then
+    if (wc == g.ARROW) or (wc == g.DAGGER) or (wc == g.SHURIKEN) or (wc == g.DART) then
       val = val * obj.quantity
     end
     val = val + (obj.d_enchant * 85) + (obj.hit_enchant * 85)
@@ -230,11 +219,7 @@ local function sell_pack()
       g.rogue.gold = g.rogue.gold + val
 
       if row < g.DROWS then
-        g.mvaddstr(
-          row,
-          0,
-          string.format("%5d      %s", val, g.get_desc(obj, true))
-        )
+        g.mvaddstr(row, 0, string.format("%5d      %s", val, g.get_desc(obj, true)))
         row = row + 1
       end
     end
@@ -244,7 +229,7 @@ local function sell_pack()
   if g.rogue.gold > g.MAX_GOLD then
     g.rogue.gold = g.MAX_GOLD
   end
-  g.message ""
+  g.message("")
 end
 
 function g.win()
@@ -271,8 +256,8 @@ function g.win()
   center(17, "(y(" .. mesg[184] .. "(y(")
   center(18, "(y(" .. mesg[185] .. "(y(")
 
-  g.message ""
-  g.message ""
+  g.message("")
+  g.message("")
   id_all()
   sell_pack()
   g.put_scores(nil, g.WIN)
@@ -347,12 +332,12 @@ function g.put_scores(monster, other)
   local file = g.game_dir .. score_file
   local fp = io.open(file, "rb")
   if fp then
-    local buf = fp:read "*a"
+    local buf = fp:read("*a")
     g.xxx(true)
     buf = g.xxxx(buf)
-    vim.cmd 'let &encoding = "utf-8"'
+    vim.cmd('let &encoding = "utf-8"')
     buf = g.iconv_from_utf8(buf)
-    vim.cmd "let &encoding = s:save_encoding"
+    vim.cmd("let &encoding = s:save_encoding")
     scores = assert(util.loadstring("return " .. buf), mesg[199])()
     fp:close()
   end
@@ -377,11 +362,7 @@ function g.put_scores(monster, other)
       sf_error()
       g.exit()
     end
-    table.insert(
-      scores,
-      rank,
-      { score = g.rogue.gold, line = score_line(monster, other) }
-    )
+    table.insert(scores, rank, { score = g.rogue.gold, line = score_line(monster, other) })
     if #scores > MAX_RANK then
       table.remove(scores)
     end
@@ -405,7 +386,7 @@ function g.put_scores(monster, other)
     g.mvaddstr(i + 7, 0, c .. string.format(" %2d", i) .. scores[i].line .. c)
   end
   g.refresh()
-  g.message ""
+  g.message("")
   g.exit()
 end
 

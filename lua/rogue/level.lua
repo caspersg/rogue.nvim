@@ -1,7 +1,7 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.cur_level = 0
 g.max_level = 1
@@ -268,12 +268,8 @@ local function connect_rooms(room1, room2)
   local rev = 0
 
   if
-    not (
-      g.rooms[room1].is_room == g.R_ROOM or g.rooms[room1].is_room == g.R_MAZE
-    )
-    or not (
-      g.rooms[room2].is_room == g.R_ROOM or g.rooms[room2].is_room == g.R_MAZE
-    )
+    not (g.rooms[room1].is_room == g.R_ROOM or g.rooms[room1].is_room == g.R_MAZE)
+    or not (g.rooms[room2].is_room == g.R_ROOM or g.rooms[room2].is_room == g.R_MAZE)
   then
     return false
   end
@@ -473,10 +469,7 @@ local function recursive_deadend(rn, offsets, srow, scol)
 
   for i = 0, 3 do
     de = rn + offsets[i]
-    if
-      ((de < 0) or (de >= g.MAXROOMS))
-      or not (same_row(rn, de) or same_col(rn, de))
-    then
+    if ((de < 0) or (de >= g.MAXROOMS)) or not (same_row(rn, de) or same_col(rn, de)) then
       -- continue
     else
       if not (g.rooms[de].is_room == g.R_NOTHING) then
@@ -485,11 +478,9 @@ local function recursive_deadend(rn, offsets, srow, scol)
         drow = util.int_div(g.rooms[de].top_row + g.rooms[de].bottom_row, 2)
         dcol = util.int_div(g.rooms[de].left_col + g.rooms[de].right_col, 2)
         if same_row(rn, de) then
-          tunnel_dir = (g.rooms[rn].left_col < g.rooms[de].left_col) and g.RIGHT
-            or g.LEFT
+          tunnel_dir = (g.rooms[rn].left_col < g.rooms[de].left_col) and g.RIGHT or g.LEFT
         else
-          tunnel_dir = (g.rooms[rn].top_row < g.rooms[de].top_row) and g.DOWN
-            or g.UPWARD
+          tunnel_dir = (g.rooms[rn].top_row < g.rooms[de].top_row) and g.DOWN or g.UPWARD
         end
         draw_simple_passage(srow, scol, drow, dcol, tunnel_dir)
         r_de = de
@@ -527,27 +518,17 @@ local function fill_it(rn, do_rec_de)
     if
       (target_room < 0 or target_room >= g.MAXROOMS)
       or not (same_row(rn, target_room) or same_col(rn, target_room))
-      or not (
-        g.rooms[target_room].is_room == g.R_ROOM
-        or g.rooms[target_room].is_room == g.R_MAZE
-      )
+      or not (g.rooms[target_room].is_room == g.R_ROOM or g.rooms[target_room].is_room == g.R_MAZE)
     then
       -- continue
     else
       if same_row(rn, target_room) then
-        tunnel_dir = (g.rooms[rn].left_col < g.rooms[target_room].left_col)
-            and g.RIGHT
-          or g.LEFT
+        tunnel_dir = (g.rooms[rn].left_col < g.rooms[target_room].left_col) and g.RIGHT or g.LEFT
       else
-        tunnel_dir = (g.rooms[rn].top_row < g.rooms[target_room].top_row)
-            and g.DOWN
-          or g.UPWARD
+        tunnel_dir = (g.rooms[rn].top_row < g.rooms[target_room].top_row) and g.DOWN or g.UPWARD
       end
       door_dir = ((tunnel_dir + 4) % g.DIRS)
-      if
-        g.rooms[target_room].doors[util.int_div(door_dir, 2)].oth_room
-        ~= g.NO_ROOM
-      then
+      if g.rooms[target_room].doors[util.int_div(door_dir, 2)].oth_room ~= g.NO_ROOM then
         -- continue
       else
         local mask_room_ret = false
@@ -594,10 +575,7 @@ local function fill_out_level()
 
   for i = 0, g.MAXROOMS - 1 do
     local rn = random_rooms[i]
-    if
-      g.rooms[rn].is_room == g.R_NOTHING
-      or (g.rooms[rn].is_room == g.R_CROSS and random.coin_toss())
-    then
+    if g.rooms[rn].is_room == g.R_NOTHING or (g.rooms[rn].is_room == g.R_CROSS and random.coin_toss()) then
       fill_it(rn, 1)
     end
   end
@@ -648,20 +626,14 @@ function g.make_level()
         connect_rooms(i, i + 3)
       end
       if i < g.MAXROOMS - 2 then
-        if
-          g.rooms[i + 1].is_room == g.R_NOTHING
-          and (i + 1 ~= 4 or vertical)
-        then
+        if g.rooms[i + 1].is_room == g.R_NOTHING and (i + 1 ~= 4 or vertical) then
           if connect_rooms(i, i + 2) then
             g.rooms[i + 1].is_room = g.R_CROSS
           end
         end
       end
       if i < g.MAXROOMS - 6 then
-        if
-          g.rooms[i + 3].is_room == g.R_NOTHING
-          and (i + 3 ~= 4 or vertical)
-        then
+        if g.rooms[i + 3].is_room == g.R_NOTHING and (i + 3 ~= 4 or vertical) then
           if connect_rooms(i, i + 6) then
             g.rooms[i + 3].is_room = g.R_CROSS
           end
@@ -685,12 +657,12 @@ function g.put_player(nr)
   local col
 
   while (misses < 2) and (rn == nr) do
-    row, col = g.gr_row_col {
+    row, col = g.gr_row_col({
       [g.FLOOR] = true,
       [g.TUNNEL] = true,
       [g.OBJECT] = true,
       [g.STAIRS] = true,
-    }
+    })
     rn = g.get_room_number(row, col)
 
     misses = misses + 1
@@ -708,12 +680,7 @@ function g.put_player(nr)
   else
     g.light_passage(g.rogue.row, g.rogue.col)
   end
-  g.wake_room(
-    g.get_room_number(g.rogue.row, g.rogue.col),
-    true,
-    g.rogue.row,
-    g.rogue.col
-  )
+  g.wake_room(g.get_room_number(g.rogue.row, g.rogue.col), true, g.rogue.row, g.rogue.col)
 
   if g.new_level_message then
     g.message(g.new_level_message)
@@ -809,14 +776,8 @@ function g.show_average_hp()
   local effective_average = 0
 
   if g.rogue.exp ~= 1 then
-    real_average = util.int_div(
-      ((g.rogue.hp_max - g.extra_hp - g.INIT_HP) + g.less_hp) * 100,
-      (g.rogue.exp - 1)
-    )
-    effective_average = util.int_div(
-      (g.rogue.hp_max - g.INIT_HP) * 100,
-      (g.rogue.exp - 1)
-    )
+    real_average = util.int_div(((g.rogue.hp_max - g.extra_hp - g.INIT_HP) + g.less_hp) * 100, (g.rogue.exp - 1))
+    effective_average = util.int_div((g.rogue.hp_max - g.INIT_HP) * 100, (g.rogue.exp - 1))
   end
   g.message(
     string.format(

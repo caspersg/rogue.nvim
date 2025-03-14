@@ -1,5 +1,5 @@
 local g = Rogue -- alias
-local util = require "rogue.util"
+local util = require("rogue.util")
 
 g.DEBUG = true
 -- g.COVERAGE = true
@@ -183,8 +183,8 @@ function g.breakpoint(log_flag)
     if input == "" then
       break
     end
-    g.printf " \n"
-    local idx = input:find "="
+    g.printf(" \n")
+    local idx = input:find("=")
     if idx then
       -- set value
       local obj = input:sub(1, idx - 1)
@@ -223,9 +223,7 @@ function g.__FILE_LINE__(level)
   else
     level = level + 1
   end
-  return string.gsub(debug.getinfo(level, "S").source, "^@", "")
-    .. ":"
-    .. debug.getinfo(level, "l").currentline
+  return string.gsub(debug.getinfo(level, "S").source, "^@", "") .. ":" .. debug.getinfo(level, "l").currentline
 end
 
 function g.log_screen()
@@ -250,7 +248,7 @@ end
 
 local function cov_hook(event, line)
   local s = string.gsub(debug.getinfo(2, "S").source, "^@", "")
-  if not s:find "%.lua$" then
+  if not s:find("%.lua$") then
     return
   end
   if not cov_data[s] then

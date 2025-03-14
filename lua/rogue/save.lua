@@ -1,6 +1,6 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local util = require("rogue.util")
 
 g.save_file = "rogue_vim.save"
 
@@ -109,7 +109,7 @@ function g.restore(fname)
     return false
   end
 
-  local buf = fp:read "*a"
+  local buf = fp:read("*a")
   fp:close()
   if not buf then
     g.message(mesg[511])
@@ -117,9 +117,9 @@ function g.restore(fname)
   end
   g.xxx(true)
   buf = g.xxxx(buf)
-  vim.cmd 'let &encoding = "utf-8"'
+  vim.cmd('let &encoding = "utf-8"')
   buf = g.iconv_from_utf8(buf)
-  vim.cmd "let &encoding = s:save_encoding"
+  vim.cmd("let &encoding = s:save_encoding")
   local Rogue_copy = assert(util.loadstring("return " .. buf), mesg[508])()
 
   if g.home_dir ~= Rogue_copy.home_dir then

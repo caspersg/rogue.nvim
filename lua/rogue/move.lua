@@ -1,6 +1,6 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
 
 g.m_moves = 0
 g.you_can_move_again = ""
@@ -35,12 +35,7 @@ function g.one_move_rogue(dirch, pickup)
   local col = c
 
   if not g.can_move(g.rogue.row, g.rogue.col, row, col) then
-    if
-      (g.cur_room == g.PASSAGE)
-      and (g.blind == 0)
-      and (g.confused == 0)
-      and (not string.match("yubn", dirch))
-    then
+    if (g.cur_room == g.PASSAGE) and (g.blind == 0) and (g.confused == 0) and (not string.match("yubn", dirch)) then
       bent_passage = true
     end
     return g.MOVE_FAILED
@@ -75,10 +70,7 @@ function g.one_move_rogue(dirch, pickup)
     else
       g.light_passage(row, col)
     end
-  elseif
-    g.dungeon[g.rogue.row][g.rogue.col][g.DOOR]
-    and g.dungeon[row][col][g.TUNNEL]
-  then
+  elseif g.dungeon[g.rogue.row][g.rogue.col][g.DOOR] and g.dungeon[row][col][g.TUNNEL] then
     g.light_passage(row, col)
     g.wake_room(g.cur_room, false, g.rogue.row, g.rogue.col)
     g.darken_room(g.cur_room)
@@ -87,11 +79,7 @@ function g.one_move_rogue(dirch, pickup)
     g.light_passage(row, col)
   end
 
-  g.mvaddch(
-    g.rogue.row,
-    g.rogue.col,
-    g.get_dungeon_char(g.rogue.row, g.rogue.col)
-  )
+  g.mvaddch(g.rogue.row, g.rogue.col, g.get_dungeon_char(g.rogue.row, g.rogue.col))
   g.mvaddch(row, col, g.rogue.fchar)
 
   if not g.jump then
@@ -166,11 +154,7 @@ function g.one_move_rogue(dirch, pickup)
     g.reg_move()
     return g.STOPPED_ON_SOMETHING
   end
-  if
-    g.dungeon[row][col][g.DOOR]
-    or g.dungeon[row][col][g.STAIRS]
-    or g.dungeon[row][col][g.TRAP]
-  then
+  if g.dungeon[row][col][g.DOOR] or g.dungeon[row][col][g.STAIRS] or g.dungeon[row][col][g.TRAP] then
     if g.levitate == 0 and g.dungeon[row][col][g.TRAP] then
       g.trap_player(row, col)
     end
@@ -202,10 +186,7 @@ local function next_to_something(drow, dcol)
   for i = ((g.rogue.row > g.MIN_ROW) and -1 or 0), i_end do
     for j = ((g.rogue.col > 0) and -1 or 0), j_end do
       local continue_flag = false
-      if
-        (i == 0 and j == 0)
-        or (g.rogue.row + i == drow and g.rogue.col + j == dcol)
-      then
+      if (i == 0 and j == 0) or (g.rogue.row + i == drow and g.rogue.col + j == dcol) then
         -- continue
         continue_flag = true
       else
@@ -222,10 +203,7 @@ local function next_to_something(drow, dcol)
         -- or right of row, col, and now isn't,
         -- then don't stop
         if s[g.MONSTER] or s[g.OBJECT] or s[g.STAIRS] then
-          if
-            (row == drow or col == dcol)
-            and not (row == g.rogue.row or col == g.rogue.col)
-          then
+          if (row == drow or col == dcol) and not (row == g.rogue.row or col == g.rogue.col) then
             -- continue
             continue_flag = true
           else
@@ -236,10 +214,7 @@ local function next_to_something(drow, dcol)
       if not continue_flag then
         if s[g.TRAP] then
           if not s[g.HIDDEN] then
-            if
-              (row == drow or col == dcol)
-              and not (row == g.rogue.row or col == g.rogue.col)
-            then
+            if (row == drow or col == dcol) and not (row == g.rogue.row or col == g.rogue.col) then
               -- continue
               continue_flag = true
             else
@@ -456,12 +431,7 @@ local function check_hunger(messages_only)
 end
 
 function g.is_passable(row, col)
-  if
-    (row < g.MIN_ROW)
-    or (row > (g.DROWS - 2))
-    or (col < 0)
-    or (col > (g.DCOLS - 1))
-  then
+  if (row < g.MIN_ROW) or (row > (g.DROWS - 2)) or (col < 0) or (col > (g.DCOLS - 1)) then
     return false
   end
   if g.dungeon[row][col][g.HIDDEN] then

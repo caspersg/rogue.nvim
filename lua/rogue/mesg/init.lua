@@ -1,7 +1,7 @@
 ---@type { JAPAN?: boolean, English?: boolean, [integer]: string }
 local M = {}
 ---@type Path
-local Path = require "plenary.path"
+local Path = require("plenary.path")
 
 ---@param fname string
 ---@return table<integer, string>|nil
@@ -13,7 +13,7 @@ local function read_mesg_file(fname)
   ---@type table<integer, string>
   local mesg = {}
   for line in mesg_file:lines() do
-    local num, msg = line:match '^(%d+)%s*"([^"]*)"'
+    local num, msg = line:match('^(%d+)%s*"([^"]*)"')
     if num then
       num = tonumber(num)
       if not mesg[num] then
@@ -40,7 +40,7 @@ local function read_mesg()
   local lang = vim.v.lang
   if type(japanese) == "number" then
     M.JAPAN = japanese ~= 0
-  elseif lang:match "ja" then
+  elseif lang:match("ja") then
     M.JAPAN = true
   else
     M.JAPAN = false
@@ -53,7 +53,7 @@ local function read_mesg()
   end
   mesg = vim.tbl_deep_extend("force", mesg, ret)
 
-  if not M.JAPAN and mesg[1]:find "English" then
+  if not M.JAPAN and mesg[1]:find("English") then
     M.English = true
   end
 

@@ -1,7 +1,7 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.hit_message = ""
 local fight_monster = nil
@@ -27,8 +27,7 @@ function g.mon_hit(monster, other, flame)
     hit_chance = 100
   else
     hit_chance = monster.m_hit_chance
-    hit_chance = hit_chance
-      - (((2 * g.rogue.exp) + (2 * g.ring_exp)) - g.r_rings)
+    hit_chance = hit_chance - (((2 * g.rogue.exp) + (2 * g.ring_exp)) - g.r_rings)
   end
   if g.wizard then
     hit_chance = util.int_div(hit_chance, 2)
@@ -44,8 +43,7 @@ function g.mon_hit(monster, other, flame)
 
   if not random.rand_percent(hit_chance) then
     if not fight_monster then
-      g.hit_message = g.hit_message
-        .. string.format(mesg[18], (other and other or mn))
+      g.hit_message = g.hit_message .. string.format(mesg[18], (other and other or mn))
       g.message(g.hit_message, true)
       g.hit_message = ""
     end
@@ -230,10 +228,7 @@ function g.fight(to_the_death)
   row, col = g.get_dir_rc(ch, row, col, false)
 
   local c = g.mvinch(row, col)
-  if
-    not c:find "^[A-Z]$"
-    or not g.can_move(g.rogue.row, g.rogue.col, row, col)
-  then
+  if not c:find("^[A-Z]$") or not g.can_move(g.rogue.row, g.rogue.col, row, col) then
     g.message(mesg[25])
     return
   end
@@ -243,10 +238,7 @@ function g.fight(to_the_death)
   end
   local possible_damage
   if not fight_monster.m_flags[g.STATIONARY] then
-    possible_damage = util.int_div(
-      (g.get_damage(fight_monster.m_damage, false) * 2),
-      3
-    )
+    possible_damage = util.int_div((g.get_damage(fight_monster.m_damage, false) * 2), 3)
   else
     possible_damage = fight_monster.stationary_damage - 1
   end
@@ -317,7 +309,6 @@ end
 
 function g.get_weapon_damage(weapon)
   local damage = get_w_damage(weapon) + damage_for_strength()
-  damage = damage
-    + util.int_div((((g.rogue.exp + g.ring_exp) - g.r_rings) + 1), 2)
+  damage = damage + util.int_div((((g.rogue.exp + g.ring_exp) - g.r_rings) + 1), 2)
   return damage
 end

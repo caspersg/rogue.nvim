@@ -5,8 +5,8 @@ end
 
 Rogue = {}
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local util = require("rogue.util")
 
 g.version = "1.0.2"
 
@@ -23,9 +23,9 @@ local function check_global()
 end
 
 local function init_dirs()
-  g.home_dir = os.getenv "HOME"
+  g.home_dir = os.getenv("HOME")
   if not g.home_dir then
-    g.home_dir = os.getenv "USERPROFILE"
+    g.home_dir = os.getenv("USERPROFILE")
     if not g.home_dir then
       g.home_dir = "."
     end
@@ -54,7 +54,7 @@ end
 
 local function main()
   if not mesg[1] then
-    print "Cannot open message file"
+    print("Cannot open message file")
     return
   end
   if vim.o.columns < g.DCOLS or vim.o.lines < g.DROWS then
@@ -64,7 +64,7 @@ local function main()
   local first = true
   g.update_flag = true
 
-  local args = util.split(util.get_vim_variable "s:args", " ")
+  local args = util.split(util.get_vim_variable("s:args"), " ")
   if g.init(args) then
     -- restored game
     first = false

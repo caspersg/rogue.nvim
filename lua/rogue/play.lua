@@ -1,5 +1,5 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
+local mesg = require("rogue.mesg")
 
 g.interrupted = false
 g.suspended = false
@@ -74,13 +74,13 @@ local function identify()
     if ch == g.CANCEL then
       g.check_message()
       return
-    elseif ch:find "^[A-Z]$" then
+    elseif ch:find("^[A-Z]$") then
       g.check_message()
-      p = g.m_names[string.byte(ch) - string.byte "A"]
+      p = g.m_names[string.byte(ch) - string.byte("A")]
       break
-    elseif ch:find "^[a-z]$" then
+    elseif ch:find("^[a-z]$") then
       g.check_message()
-      p = g.m_names[string.byte(ch) - string.byte "a"]
+      p = g.m_names[string.byte(ch) - string.byte("a")]
       break
     else
       local n = string.find("@.|-+#%^*:])?!/=,", ch, 1, true)
@@ -96,7 +96,7 @@ local function identify()
 end
 
 local function doshell()
-  vim.cmd "sh"
+  vim.cmd("sh")
 end
 
 function g.play_level()
@@ -139,16 +139,7 @@ function g.play_level()
       g.fight(false)
     elseif ch == "F" then
       g.fight(true)
-    elseif
-      ch == "h"
-      or ch == "j"
-      or ch == "k"
-      or ch == "l"
-      or ch == "y"
-      or ch == "u"
-      or ch == "n"
-      or ch == "b"
-    then
+    elseif ch == "h" or ch == "j" or ch == "k" or ch == "l" or ch == "y" or ch == "u" or ch == "n" or ch == "b" then
       g.one_move_rogue(ch, true)
     elseif
       ch == "H"
@@ -222,9 +213,9 @@ function g.play_level()
     elseif ch == "t" then
       g.throw()
     elseif ch == "v" then
-      g.message "Rogue-clone: Version II. (Tim Stoehr was here), tektronix!zeus!tims "
-      g.message "Japanese edition: Ver.1.3a (enhanced by ohta@src.ricoh.co.jp)"
-      g.message "Ver.1.3aS program bug fix/separate (by brx@kmc.kyoto-u.ac.jp)"
+      g.message("Rogue-clone: Version II. (Tim Stoehr was here), tektronix!zeus!tims ")
+      g.message("Japanese edition: Ver.1.3a (enhanced by ohta@src.ricoh.co.jp)")
+      g.message("Ver.1.3aS program bug fix/separate (by brx@kmc.kyoto-u.ac.jp)")
       g.message("Porting to Vim plugin: Ver." .. g.version .. " (by katono)")
       g.message(mesg[1]) -- for message version
     elseif ch == "Q" then

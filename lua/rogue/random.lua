@@ -1,5 +1,5 @@
 local M = {}
-local util = require "rogue.util"
+local util = require("rogue.util")
 
 local rntb = {
   [0] = 3,
@@ -48,8 +48,7 @@ local function rrandom()
   local i
   if rand_type == 0 then
     -- 1103515245 = 129749 * 8505
-    rntb[state] = ((((rntb[state] * 129749) % 0x80000000) * 8505) + 12345)
-      % 0x80000000
+    rntb[state] = ((((rntb[state] * 129749) % 0x80000000) * 8505) + 12345) % 0x80000000
     i = rntb[state]
   else
     rntb[fptr] = (rntb[fptr] + rntb[rptr]) % 0x100000000
@@ -75,9 +74,7 @@ function M.srrandom(x)
   if rand_type ~= 0 then
     for i = 1, rand_deg - 1 do
       -- 1103515245 = 129749 * 8505
-      rntb[state + i] = (
-          (((rntb[state + i - 1] * 129749) % 0x100000000) * 8505) + 12345
-        ) % 0x100000000
+      rntb[state + i] = ((((rntb[state + i - 1] * 129749) % 0x100000000) * 8505) + 12345) % 0x100000000
     end
     fptr = state + rand_sep
     rptr = state

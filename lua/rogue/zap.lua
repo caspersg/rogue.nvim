@@ -1,7 +1,7 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.wizard = false
 
@@ -90,9 +90,7 @@ function g.zapp()
       monster, row, col = get_missiled_monster(dir, row, col)
       g.mvaddch(g.rogue.row, g.rogue.col, g.rogue.fchar)
       g.refresh()
-      if
-        (row ~= g.rogue.row or col ~= g.rogue.col) and g.rogue_can_see(row, col)
-      then
+      if (row ~= g.rogue.row or col ~= g.rogue.col) and g.rogue_can_see(row, col) then
         g.mvaddch(row, col, g.get_dungeon_char(row, col))
       end
     else
@@ -111,12 +109,12 @@ local function tele_away(monster)
   if monster.m_flags[g.HOLDS] then
     g.being_held = false
   end
-  local row, col = g.gr_row_col {
+  local row, col = g.gr_row_col({
     [g.FLOOR] = true,
     [g.TUNNEL] = true,
     [g.STAIRS] = true,
     [g.OBJECT] = true,
-  }
+  })
   g.mvaddch(monster.row, monster.col, monster.trail_char)
   g.dungeon[monster.row][monster.col][g.MONSTER] = nil
   monster.row = row

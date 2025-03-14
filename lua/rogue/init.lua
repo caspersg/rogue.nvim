@@ -1,6 +1,6 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
 
 g.nick_name = ""
 g.score_only = false
@@ -13,10 +13,7 @@ g.do_restore = false
 local rest_file = nil
 
 local function set_nick_name()
-  g.nick_name = vim.g["rogue#name"]
-    or os.getenv "FIGHTER"
-    or os.getenv "USER"
-    or os.getenv "USERNAME"
+  g.nick_name = vim.g["rogue#name"] or os.getenv("FIGHTER") or os.getenv("USER") or os.getenv("USERNAME")
   local default_name = mesg[542]
   vim.ui.input({ prompt = mesg[13], default = default_name }, function(input)
     if input == "" then
@@ -163,8 +160,8 @@ function g.init(args)
 
   do_args(args)
   if g.score_only then
-    g.message ""
-    print ""
+    g.message("")
+    print("")
     g.put_scores(nil, 0)
     -- NOTREACHED
   end

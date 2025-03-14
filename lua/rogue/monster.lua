@@ -1,7 +1,7 @@
 local g = Rogue -- alias
-local mesg = require "rogue.mesg"
-local random = require "rogue.random"
-local util = require "rogue.util"
+local mesg = require("rogue.mesg")
+local random = require("rogue.random")
+local util = require("rogue.util")
 
 g.level_monsters = {}
 g.mon_disappeared = false
@@ -72,238 +72,29 @@ function g.init_monster()
   }
   g.mon_tab[0] = Monster.new("0d0", 25, "A", 20, 9, 18, 100, 0, 0, g.m_names[0])
   g.mon_tab[1] = Monster.new("1d3", 10, "B", 2, 1, 8, 60, 0, 0, g.m_names[1])
-  g.mon_tab[2] = Monster.new(
-    "3d3/2d5",
-    32,
-    "C",
-    15,
-    7,
-    16,
-    85,
-    0,
-    10,
-    g.m_names[2]
-  )
-  g.mon_tab[3] = Monster.new(
-    "4d6/4d9",
-    145,
-    "D",
-    5000,
-    21,
-    126,
-    100,
-    0,
-    90,
-    g.m_names[3]
-  )
+  g.mon_tab[2] = Monster.new("3d3/2d5", 32, "C", 15, 7, 16, 85, 0, 10, g.m_names[2])
+  g.mon_tab[3] = Monster.new("4d6/4d9", 145, "D", 5000, 21, 126, 100, 0, 90, g.m_names[3])
   g.mon_tab[4] = Monster.new("1d3", 11, "E", 2, 1, 7, 65, 0, 0, g.m_names[4])
-  g.mon_tab[5] = Monster.new(
-    "5d5",
-    73,
-    "F",
-    91,
-    12,
-    126,
-    80,
-    0,
-    0,
-    g.m_names[5]
-  )
-  g.mon_tab[6] = Monster.new(
-    "5d5/5d5",
-    115,
-    "G",
-    2000,
-    20,
-    126,
-    85,
-    0,
-    10,
-    g.m_names[6]
-  )
-  g.mon_tab[7] = Monster.new(
-    "1d3/1d2",
-    15,
-    "H",
-    3,
-    1,
-    10,
-    67,
-    0,
-    0,
-    g.m_names[7]
-  )
+  g.mon_tab[5] = Monster.new("5d5", 73, "F", 91, 12, 126, 80, 0, 0, g.m_names[5])
+  g.mon_tab[6] = Monster.new("5d5/5d5", 115, "G", 2000, 20, 126, 85, 0, 10, g.m_names[6])
+  g.mon_tab[7] = Monster.new("1d3/1d2", 15, "H", 3, 1, 10, 67, 0, 0, g.m_names[7])
   g.mon_tab[8] = Monster.new("0d0", 15, "I", 5, 2, 11, 68, 0, 0, g.m_names[8])
-  g.mon_tab[9] = Monster.new(
-    "3d10/4d5",
-    132,
-    "J",
-    3000,
-    21,
-    126,
-    100,
-    0,
-    0,
-    g.m_names[9]
-  )
+  g.mon_tab[9] = Monster.new("3d10/4d5", 132, "J", 3000, 21, 126, 100, 0, 0, g.m_names[9])
   g.mon_tab[10] = Monster.new("1d4", 10, "K", 2, 1, 6, 60, 0, 0, g.m_names[10])
-  g.mon_tab[11] = Monster.new(
-    "0d0",
-    25,
-    "L",
-    21,
-    6,
-    16,
-    75,
-    0,
-    0,
-    g.m_names[11]
-  )
-  g.mon_tab[12] = Monster.new(
-    "4d4/3d7",
-    97,
-    "M",
-    250,
-    18,
-    126,
-    85,
-    0,
-    25,
-    g.m_names[12]
-  )
-  g.mon_tab[13] = Monster.new(
-    "0d0",
-    25,
-    "N",
-    39,
-    10,
-    19,
-    75,
-    0,
-    100,
-    g.m_names[13]
-  )
-  g.mon_tab[14] = Monster.new(
-    "1d6",
-    25,
-    "O",
-    5,
-    4,
-    13,
-    70,
-    0,
-    10,
-    g.m_names[14]
-  )
-  g.mon_tab[15] = Monster.new(
-    "5d4",
-    76,
-    "P",
-    120,
-    15,
-    24,
-    80,
-    0,
-    50,
-    g.m_names[15]
-  )
-  g.mon_tab[16] = Monster.new(
-    "3d5",
-    30,
-    "Q",
-    20,
-    8,
-    17,
-    78,
-    0,
-    20,
-    g.m_names[16]
-  )
-  g.mon_tab[17] = Monster.new(
-    "2d5",
-    19,
-    "R",
-    10,
-    3,
-    12,
-    70,
-    0,
-    0,
-    g.m_names[17]
-  )
+  g.mon_tab[11] = Monster.new("0d0", 25, "L", 21, 6, 16, 75, 0, 0, g.m_names[11])
+  g.mon_tab[12] = Monster.new("4d4/3d7", 97, "M", 250, 18, 126, 85, 0, 25, g.m_names[12])
+  g.mon_tab[13] = Monster.new("0d0", 25, "N", 39, 10, 19, 75, 0, 100, g.m_names[13])
+  g.mon_tab[14] = Monster.new("1d6", 25, "O", 5, 4, 13, 70, 0, 10, g.m_names[14])
+  g.mon_tab[15] = Monster.new("5d4", 76, "P", 120, 15, 24, 80, 0, 50, g.m_names[15])
+  g.mon_tab[16] = Monster.new("3d5", 30, "Q", 20, 8, 17, 78, 0, 20, g.m_names[16])
+  g.mon_tab[17] = Monster.new("2d5", 19, "R", 10, 3, 12, 70, 0, 0, g.m_names[17])
   g.mon_tab[18] = Monster.new("1d3", 8, "S", 2, 1, 9, 50, 0, 0, g.m_names[18])
-  g.mon_tab[19] = Monster.new(
-    "4d6/1d4",
-    75,
-    "T",
-    125,
-    13,
-    22,
-    75,
-    0,
-    33,
-    g.m_names[19]
-  )
-  g.mon_tab[20] = Monster.new(
-    "4d10",
-    90,
-    "U",
-    200,
-    17,
-    26,
-    85,
-    0,
-    33,
-    g.m_names[20]
-  )
-  g.mon_tab[21] = Monster.new(
-    "1d14/1d4",
-    55,
-    "V",
-    350,
-    19,
-    126,
-    85,
-    0,
-    18,
-    g.m_names[21]
-  )
-  g.mon_tab[22] = Monster.new(
-    "2d8",
-    45,
-    "W",
-    55,
-    14,
-    23,
-    75,
-    0,
-    0,
-    g.m_names[22]
-  )
-  g.mon_tab[23] = Monster.new(
-    "4d6",
-    42,
-    "X",
-    110,
-    16,
-    25,
-    75,
-    0,
-    0,
-    g.m_names[23]
-  )
-  g.mon_tab[24] = Monster.new(
-    "3d6",
-    35,
-    "Y",
-    50,
-    11,
-    20,
-    80,
-    0,
-    20,
-    g.m_names[24]
-  )
+  g.mon_tab[19] = Monster.new("4d6/1d4", 75, "T", 125, 13, 22, 75, 0, 33, g.m_names[19])
+  g.mon_tab[20] = Monster.new("4d10", 90, "U", 200, 17, 26, 85, 0, 33, g.m_names[20])
+  g.mon_tab[21] = Monster.new("1d14/1d4", 55, "V", 350, 19, 126, 85, 0, 18, g.m_names[21])
+  g.mon_tab[22] = Monster.new("2d8", 45, "W", 55, 14, 23, 75, 0, 0, g.m_names[22])
+  g.mon_tab[23] = Monster.new("4d6", 42, "X", 110, 16, 25, 75, 0, 0, g.m_names[23])
+  g.mon_tab[24] = Monster.new("3d6", 35, "Y", 50, 11, 20, 80, 0, 20, g.m_names[24])
   g.mon_tab[25] = Monster.new("1d7", 21, "Z", 8, 5, 14, 69, 0, 0, g.m_names[25])
 
   g.mon_tab[0].m_flags = {
@@ -471,12 +262,12 @@ function g.put_mons()
     if monster.m_flags[g.WANDERS] and random.coin_toss() then
       g.wake_up(monster)
     end
-    local row, col = g.gr_row_col {
+    local row, col = g.gr_row_col({
       [g.FLOOR] = true,
       [g.TUNNEL] = true,
       [g.STAIRS] = true,
       [g.OBJECT] = true,
-    }
+    })
     put_m_at(row, col, monster)
   end
 end
@@ -486,10 +277,7 @@ function g.gr_monster(monster, mn)
     monster = {}
     while true do
       mn = random.get_rand(0, g.MONSTERS - 1)
-      if
-        (g.cur_level >= g.mon_tab[mn].first_level)
-        and (g.cur_level <= g.mon_tab[mn].last_level)
-      then
+      if (g.cur_level >= g.mon_tab[mn].first_level) and (g.cur_level <= g.mon_tab[mn].last_level) then
         break
       end
     end
@@ -562,11 +350,7 @@ function g.mv_mons()
         goto_NM_flag = true
       end
     end
-    if
-      not goto_NM_flag
-      and monster.m_flags[g.CONFUSED]
-      and move_confused(monster)
-    then
+    if not goto_NM_flag and monster.m_flags[g.CONFUSED] and move_confused(monster) then
       -- goto NM
       goto_NM_flag = true
     end
@@ -614,10 +398,7 @@ function g.party_monsters(rn, n)
     for j = 0, 249 do
       row = random.get_rand(g.rooms[rn].top_row + 1, g.rooms[rn].bottom_row - 1)
       col = random.get_rand(g.rooms[rn].left_col + 1, g.rooms[rn].right_col - 1)
-      if
-        not g.dungeon[row][col][g.MONSTER]
-        and (g.dungeon[row][col][g.FLOOR] or g.dungeon[row][col][g.TUNNEL])
-      then
+      if not g.dungeon[row][col][g.MONSTER] and (g.dungeon[row][col][g.FLOOR] or g.dungeon[row][col][g.TUNNEL]) then
         found = true
         break
       end
@@ -645,10 +426,7 @@ end
 
 function g.gmc(monster)
   if
-    (
-      not (g.detect_monster or g.see_invisible or g.r_see_invisible)
-      and monster.m_flags[g.INVISIBLE]
-    ) or g.blind > 0
+    (not (g.detect_monster or g.see_invisible or g.r_see_invisible) and monster.m_flags[g.INVISIBLE]) or g.blind > 0
   then
     return monster.trail_char
   end
@@ -695,11 +473,7 @@ function g.mv_monster(monster, row, col)
       monster.m_flags[g.WAKENS]
       and g.rogue_is_around(monster.row, monster.col)
       and random.rand_percent(
-        (
-            (g.stealthy > 0)
-              and util.int_div(g.WAKE_PERCENT, (g.STEALTH_FACTOR + g.stealthy))
-            or g.WAKE_PERCENT
-          )
+        ((g.stealthy > 0) and util.int_div(g.WAKE_PERCENT, (g.STEALTH_FACTOR + g.stealthy)) or g.WAKE_PERCENT)
       )
     then
       g.wake_up(monster)
@@ -712,10 +486,7 @@ function g.mv_monster(monster, row, col)
   if monster.m_flags[g.FLITS] and flit(monster) then
     return
   end
-  if
-    monster.m_flags[g.STATIONARY]
-    and not g.mon_can_go(monster, g.rogue.row, g.rogue.col)
-  then
+  if monster.m_flags[g.STATIONARY] and not g.mon_can_go(monster, g.rogue.row, g.rogue.col) then
     return
   end
   if monster.m_flags[g.FREEZING_ROGUE] then
@@ -745,9 +516,7 @@ function g.mv_monster(monster, row, col)
   elseif monster.row < row then
     row = monster.row + 1
   end
-  if
-    g.dungeon[row][monster.col][g.DOOR] and mtry(monster, row, monster.col)
-  then
+  if g.dungeon[row][monster.col][g.DOOR] and mtry(monster, row, monster.col) then
     return
   end
   if monster.col > col then
@@ -755,9 +524,7 @@ function g.mv_monster(monster, row, col)
   elseif monster.col < col then
     col = monster.col + 1
   end
-  if
-    g.dungeon[monster.row][col][g.DOOR] and mtry(monster, monster.row, col)
-  then
+  if g.dungeon[monster.row][col][g.DOOR] and mtry(monster, monster.row, col) then
     return
   end
   if mtry(monster, row, col) then
@@ -801,10 +568,7 @@ function g.mv_monster(monster, row, col)
   if monster.row == monster.o_row and monster.col == monster.o_col then
     monster.o = monster.o + 1
     if monster.o > 4 then
-      if
-        monster.trow == g.NO_ROOM
-        and not g.mon_sees(monster, g.rogue.row, g.rogue.col)
-      then
+      if monster.trow == g.NO_ROOM and not g.mon_sees(monster, g.rogue.row, g.rogue.col) then
         monster.trow = random.get_rand(1, (g.DROWS - 2))
         monster.tcol = random.get_rand(0, (g.DCOLS - 1))
       else
@@ -827,7 +591,7 @@ function g.move_mon_to(monster, row, col)
   g.dungeon[row][col][g.MONSTER] = g.dungeon_desc[g.MONSTER]
 
   local c = g.mvinch(mrow, mcol)
-  if c:find "^[A-Z]$" then
+  if c:find("^[A-Z]$") then
     if not g.detect_monster then
       g.mvaddch(mrow, mcol, monster.trail_char)
     else
@@ -843,10 +607,7 @@ function g.move_mon_to(monster, row, col)
   end
   monster.trail_char = g.mvinch(row, col)
   if g.blind == 0 and (g.detect_monster or g.rogue_can_see(row, col)) then
-    if
-      not monster.m_flags[g.INVISIBLE]
-      or (g.detect_monster or g.see_invisible or g.r_see_invisible)
-    then
+    if not monster.m_flags[g.INVISIBLE] or (g.detect_monster or g.see_invisible or g.r_see_invisible) then
       g.mvaddch(row, col, g.gmc(monster))
     end
   end
@@ -859,12 +620,7 @@ function g.move_mon_to(monster, row, col)
     g.mvaddch(mrow, mcol, " ")
   end
   if g.dungeon[row][col][g.DOOR] then
-    g.dr_course(
-      monster,
-      g.dungeon[mrow][mcol][g.TUNNEL] and true or false,
-      row,
-      col
-    )
+    g.dr_course(monster, g.dungeon[mrow][mcol][g.TUNNEL] and true or false, row, col)
   else
     monster.row = row
     monster.col = col
@@ -888,19 +644,13 @@ function g.mon_can_go(monster, row, col)
   if
     monster.row ~= row
     and monster.col ~= col
-    and (
-      g.dungeon[row][col][g.DOOR]
-      or g.dungeon[monster.row][monster.col][g.DOOR]
-    )
+    and (g.dungeon[row][col][g.DOOR] or g.dungeon[monster.row][monster.col][g.DOOR])
   then
     return false
   end
   if
-    not (
-      monster.m_flags[g.FLITS]
-      or monster.m_flags[g.CONFUSED]
-      or monster.m_flags[g.CAN_FLIT]
-    ) and monster.trow == g.NO_ROOM
+    not (monster.m_flags[g.FLITS] or monster.m_flags[g.CONFUSED] or monster.m_flags[g.CAN_FLIT])
+    and monster.trow == g.NO_ROOM
   then
     if
       (monster.row < g.rogue.row and row < monster.row)
@@ -929,8 +679,7 @@ function g.wake_up(monster)
 end
 
 function g.wake_room(rn, entering, row, col)
-  local wake_percent = (rn == g.party_room) and g.PARTY_WAKE_PERCENT
-    or g.WAKE_PERCENT
+  local wake_percent = (rn == g.party_room) and g.PARTY_WAKE_PERCENT or g.WAKE_PERCENT
   if g.stealthy > 0 then
     wake_percent = util.int_div(wake_percent, (g.STEALTH_FACTOR + g.stealthy))
   end
@@ -947,10 +696,7 @@ function g.wake_room(rn, entering, row, col)
         monster.tcol = col
       end
     end
-    if
-      monster.m_flags[g.WAKENS]
-      and (rn == g.get_room_number(monster.row, monster.col))
-    then
+    if monster.m_flags[g.WAKENS] and (rn == g.get_room_number(monster.row, monster.col)) then
       if random.rand_percent(wake_percent) then
         g.wake_up(monster)
       end
@@ -962,10 +708,7 @@ end
 function g.mon_name(monster)
   if
     g.blind > 0
-    or (
-      monster.m_flags[g.INVISIBLE]
-      and not (g.detect_monster or g.see_invisible or g.r_see_invisible)
-    )
+    or (monster.m_flags[g.INVISIBLE] and not (g.detect_monster or g.see_invisible or g.r_see_invisible))
   then
     return mesg[63]
   end
@@ -998,12 +741,12 @@ function g.wanderer()
     found = false
     g.wake_up(monster)
     for i = 0, 24 do
-      local row, col = g.gr_row_col {
+      local row, col = g.gr_row_col({
         [g.FLOOR] = true,
         [g.TUNNEL] = true,
         [g.STAIRS] = true,
         [g.OBJECT] = true,
-      }
+      })
       if not g.rogue_can_see(row, col) then
         put_m_at(row, col, monster)
         found = true
@@ -1080,14 +823,12 @@ end
 
 function g.rogue_can_see(row, col)
   return (
-      g.blind == 0
-      and (
-        (
-          g.get_room_number(row, col) == g.cur_room
-          and g.rooms[g.cur_room].is_room ~= g.R_MAZE
-        ) or g.rogue_is_around(row, col)
-      )
+    g.blind == 0
+    and (
+      (g.get_room_number(row, col) == g.cur_room and g.rooms[g.cur_room].is_room ~= g.R_MAZE)
+      or g.rogue_is_around(row, col)
     )
+  )
 end
 
 function g.gr_obj_char()
@@ -1112,11 +853,7 @@ end
 
 function g.mon_sees(monster, row, col)
   local rn = g.get_room_number(row, col)
-  if
-    rn ~= g.NO_ROOM
-    and rn == g.get_room_number(monster.row, monster.col)
-    and g.rooms[rn].is_room ~= g.R_MAZE
-  then
+  if rn ~= g.NO_ROOM and rn == g.get_room_number(monster.row, monster.col) and g.rooms[rn].is_room ~= g.R_MAZE then
     return true
   end
   local rdif = row - monster.row
@@ -1129,9 +866,7 @@ function g.mv_aquatars()
   local monster = g.level_monsters.next_object
 
   while monster do
-    if
-      monster.m_char == "A" and g.mon_can_go(monster, g.rogue.row, g.rogue.col)
-    then
+    if monster.m_char == "A" and g.mon_can_go(monster, g.rogue.row, g.rogue.col) then
       g.mv_monster(monster, g.rogue.row, g.rogue.col)
       monster.m_flags[g.ALREADY_MOVED] = g.m_flags_desc[g.ALREADY_MOVED]
     end
